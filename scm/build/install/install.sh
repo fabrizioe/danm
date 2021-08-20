@@ -77,7 +77,7 @@ fi
 # Apply API extension CRDs
 #
 echo ; echo "Applying CRDs to extend Kubernetes API..."
-kubectl apply -f /integration/crds/${DANM_DEPLOY_MODE}
+kubectl version
 
 #
 # Create Service-Account user

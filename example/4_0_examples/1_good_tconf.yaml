@@ -3,11 +3,9 @@ kind: TenantConfig
 metadata:
   name: tconf
 hostDevices:
-- name: ens4
+- name: eth0
   vniType: vlan
   vniRange: 1000-2000
-- name: ens5
+- name: eth0
   vniType: vlan
   vniRange: 2000-3000
-networkIds:
-  flannel: flannel

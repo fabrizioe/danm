@@ -7,7 +7,7 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: danm-installer
+      #serviceAccountName: danm-installer
       containers:
         - name: danm-installer
           volumeMounts:
@@ -15,8 +15,8 @@ spec:
               mountPath: /config
 
           # Update the next two lines as needed
-          image: danm-installer:latest
-          imagePullPolicy: IfNotPresent
+          image: rasp02:5000/danm-installer:ed6b0c57
+          imagePullPolicy: Always
 
       volumes:
         - name: danm-installer-config

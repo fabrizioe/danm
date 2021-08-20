@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: danm-cni
-          image: danm-cni-plugins
-          imagePullPolicy: {{ (getenv "IMAGE_PULL_POLICY") }}
+          image: rasp02:5000/danm-cni-plugins:ed6b0c57 
+          imagePullPolicy: Always 
           volumeMounts:
             - name: host-cni
               mountPath: /host/cni

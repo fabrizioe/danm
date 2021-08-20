@@ -23,7 +23,7 @@ data:
   # according to DanmNet.Spec.Options.container_prefix, or to an empty string if you wish the first
   # interface to always be named "eth0".
   #
-  cni_naming_scheme: ""
+  cni_naming_scheme: "awes"
 
   #
   # [OPTIONAL] Kubernetes API Root CA certificate. If left blank, the installer will obtain the
@@ -38,12 +38,17 @@ data:
   #   -o jsonpath='{.clusters[0].cluster.certificate-authority-data} \
   #   | base64 -d
   #
-#  api_ca_cert: |
-#    -----BEGIN CERTIFICATE-----
-#    VGhpcyBJcyBBIFBsYWNlaG9sZGVyIFN0cmluZy4uLiBUaGlzIElzIEEgUGxhY2Vo
-#    ...
-#    VGhpcyBpcyB0aGUgZW5kIG9mIGEgcGxhY2Vob2xkZXIgc3RyaW5nCg==
-#    -----END CERTIFICATE-----
+  api_ca_cert: |
+    -----BEGIN CERTIFICATE-----
+    MIIBdzCCAR2gAwIBAgIBADAKBggqhkjOPQQDAjAjMSEwHwYDVQQDDBhrM3Mtc2Vy
+    dmVyLWNhQDE2MjkyOTQ4ODEwHhcNMjEwODE4MTM1NDQxWhcNMzEwODE2MTM1NDQx
+    WjAjMSEwHwYDVQQDDBhrM3Mtc2VydmVyLWNhQDE2MjkyOTQ4ODEwWTATBgcqhkjO
+    PQIBBggqhkjOPQMBBwNCAASFOEi45Mfh2iUAPrkbcZdkK6TyAF/fkMVwDvVeHqZZ
+    NYK91vLLHGGZtZzKp2dw5kBY4h5orQJ8hUm94OtP5Frco0IwQDAOBgNVHQ8BAf8E
+    BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUlG3j7pi6ExBkULUyDde3
+    B0NXS7wwCgYIKoZIzj0EAwIDSAAwRQIhAOPtvWB+4EP3X/jcjeLaBqi9/TB5gjEp
+    ZBEP+CuHzKD8AiASQLwcVWMkdxTloJ1YdUT6YpH2W/BXOUED4yOvdF2zLw==
+    -----END CERTIFICATE-----
 
   #
   # This is the type of the CNI plugin used for your default (bootstrap) network.
@@ -59,7 +64,7 @@ data:
   # a file with this name will be created if the ${default_cni_config_data} parameter
   # is also provided (below).
   #
-  default_cni_network_id: 10-flannel
+  default_cni_network_id: 00-danm
 
   #
   # [OPTIONAL] Bootstrap CNI configuration data. Typically, your bootstrap CNI plugin
@@ -69,15 +74,20 @@ data:
   # contents of this variable are going to be written to a file named
   # "${default_cni_network_id}.conf" as above.
   #
-#  default_cni_config_data: |
-#    {
-#      "cniVersion": "0.3.1",
-#      "type": "flannel",
-#      "delegate": {
-#        "hairpinMode": true,
-#        "isDefaultGateway": true
-#      }
-#    }
+  default_cni_config_data: |
+   {
+     "cniVersion": "0.3.1",
+     "name": "bootstrap_cni",
+     "name_comment": "Mandatory parameter, but can be anything",
+     "type": "flannel",
+     "type_comment": "Mandatory parameter according to CNI spec, MUST be set to danm",
+     "kubeconfig": "/etc/rancher/k3s/k3s.yaml",
+     "kubeconfig_comment": "Mandatory parameter, must point to a valid kubeconfig file containing the necessary RBAC setting for DANM's service account",
+     "cniDir": "/etc/cni/net.d",
+     "cniDir_comment": "Optional parameter, if defined CNI config files for static delegates are searched here. Default value is /etc/cni/net.d",
+     "namingScheme": "awesome",
+     "namingScheme_comment": "Optional parameter, if it is set to legacy container network interface names are set exactly to DanmNet.Spec.Options.container_prefix, otherwise prefix simply behaves as a prefix and is suffixed with a sequence ID. Default value is empty (e.g. not legacy)"
+   }
 
   #
   # [OPTIONAL] A prefix (such as a registry name) to be included in each container image.
@@ -89,12 +99,12 @@ data:
   # "my-registry.example.com/namespace/". The same prefix will be applied for
   # all images.
   #
-#  image_registry_prefix: my-registry.example.com/namespace/
+  image_registry_prefix: rasp02:5000/
 
   #
   # [OPTIONAL] Image tag for each image. Defaults to "latest" if none specified.
   #
-#  image_tag: latest
+  image_tag: ed6b0c57
 
   #
   # [OPTIONAL] If your registry needs authentication, then this is the name

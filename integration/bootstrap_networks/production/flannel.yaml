@@ -1,8 +1,8 @@
 apiVersion: danm.k8s.io/v1
 kind: TenantNetwork
 metadata:
-  name: flannel
+  name: infranet 
   namespace: kube-system
 spec:
-  NetworkID: flannel
+  NetworkID: infranet
   NetworkType: flannel
